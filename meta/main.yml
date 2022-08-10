@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: nsx_vsphere_tags
   author: Vinicius Porto Lima
   description: Creates tags in vCenter and syncs them with NSX-T
 

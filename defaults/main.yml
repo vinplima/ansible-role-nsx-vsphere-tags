@@ -1,0 +1,35 @@
+---
+# defaults file for ansible-role-nsx-vsphere-tags
+
+# vCenter and NSX-T URLs
+vcenter_hostname: vcenter.local
+nsx_hostname: nsx.local
+
+# vCenter and NSX-T Credentials - use a vault instead
+vcenter_username: administrator@vsphere.local
+vcenter_password: VMware1!
+nsx_username: admin
+nsx_password: VMware1!VMware1!
+
+# if must validade certificate during connection
+validate_certs: false
+
+# remove other tags from VM in NSX-T that are not defined in the present configurations
+remove_other_tags: true
+
+# vCenter tags properties 
+category_state: present
+tag_state: present
+
+# vCenter VM properties
+vm_root_folder: /Datacenter/vm
+
+# Tags to be created
+nsx_vsphere_tags:
+  scope: 
+    - name: nsx-vsphere-demo-scope
+      description: Tags created in vSphere and in NSX-T
+      tags:
+        - name: demo-tag
+          description: Demo tag
+        

@@ -1,0 +1,9 @@
+---
+# vars file for ansible-role-nsx-vsphere-tags
+
+# vCenter tags properties 
+category_cardinality: multiple                 # multiple tags per VM in the same category
+associable_object_types: [ "Virtual Machine" ] # create tags only for VM objects
+
+# vCenter VM properties
+show_tag: true   # recover tags from VMs via Ansible

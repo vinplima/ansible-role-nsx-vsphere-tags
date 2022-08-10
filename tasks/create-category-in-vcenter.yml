@@ -1,0 +1,20 @@
+---
+- name: Create category {{ category.name }} in vCenter
+  community.vmware.vmware_category:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: "{{ validate_certs }}"
+    category_name: "{{ category.name }}"
+    category_description: "{{ category.description }}"
+    category_cardinality: "{{ category_cardinality }}"
+    associable_object_types: "{{ associable_object_types }}"
+    state: "{{ category_state }}"
+  register: category_rst
+  delegate_to: localhost
+
+- name: Create category {{ category.name }} tags in vCenter
+  include_tasks: create-tag-in-vcenter.yml
+  loop: "{{ category.tags }}"
+  loop_control:
+    loop_var: tag

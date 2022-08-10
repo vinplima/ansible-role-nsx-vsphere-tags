@@ -1,0 +1,10 @@
+---
+- name: Sync tags/vms in NSX-T
+  vmware.ansible_for_nsxt.nsxt_vm_tags:
+    hostname: "{{ nsx_hostname }}"
+    username: "{{ nsx_username }}"
+    password: "{{ nsx_password }}"
+    validate_certs: "{{ validate_certs }}"
+    virtual_machine_display_name: "{{ vm_name }}"
+    remove_other_tags: "{{ remove_other_tags }}"
+    add_tags: "{{ tags }}"

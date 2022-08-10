@@ -1,0 +1,16 @@
+---
+- name: Init VM categories/tags list
+  set_fact: 
+    vm_categories_tags_list: []
+
+- name: Set VM categories/tags list
+  set_fact: 
+    vm_categories_tags_list: "{{ vm_categories_tags_list + [{'scope': vm_tag.category_name, 'tag': vm_tag.name}] }}"
+  with_items: "{{ tags }}"
+  loop_control:
+    loop_var: vm_tag
+  when: vm_tag.category_name in category_list
+
+- name: Update VMs categories/tags dictionary
+  set_fact:
+    vms_categories_tags_dict: "{{ vms_categories_tags_dict | default({}) | combine({ vm_name: vm_categories_tags_list }) }}"

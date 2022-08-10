@@ -1,0 +1,54 @@
+---
+# tasks file for ansible-role-nsx-vsphere-tags
+
+- name: Create categories and tags in vCenter
+  include_tasks: create-category-in-vcenter.yml
+  loop: "{{ nsx_vsphere_tags.scope }}"
+  loop_control:
+    loop_var: category
+
+- name: Gather all VMs in vCenter
+  community.vmware.vmware_vm_info:
+    hostname: '{{ vcenter_hostname }}'
+    username: '{{ vcenter_username }}'
+    password: '{{ vcenter_password }}'
+    validate_certs: "{{ validate_certs }}"
+    folder: "{{ vm_root_folder }}"
+    show_tag: "{{ show_tag }}"
+  delegate_to: localhost
+  register: vm_info_rst
+
+- name: Create category list
+  set_fact: 
+    category_list: "{{ nsx_vsphere_tags.scope | map(attribute='name') | list }}"
+
+- name: Create VMs in categories list
+  set_fact:
+    vms_in_categories: "{{ vms_in_categories | default([]) + [item.0.guest_name] }}"
+  with_subelements:
+    - "{{ vm_info_rst.virtual_machines }}"
+    - 'tags'
+  when: item.1.category_name in category_list
+
+- block:
+
+    - name: Create unique vms list per category
+      set_fact: 
+        vms_in_categories_unique: "{{ vms_in_categories | list | unique }}"
+
+    - name: Create vms categories/tags list
+      include_tasks: set-vm-categories-tags-list.yml
+      with_items: "{{ vm_info_rst.virtual_machines }}"
+      when: vm_name in vms_in_categories
+      vars:
+        vm_name: "{{ item.guest_name }}"
+        tags: "{{ item.tags }}"
+
+    - name: Loop through scope and tags and create tags in NSX-T
+      include_tasks: create-tag-in-nsx.yml
+      with_items: "{{ vms_categories_tags_dict | dict2items }}"
+      vars:
+        vm_name: "{{ item.key }}"
+        tags: "{{ item.value }}"
+
+  when: vms_in_categories is defined

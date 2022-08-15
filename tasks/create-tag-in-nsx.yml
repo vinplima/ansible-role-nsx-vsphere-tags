@@ -1,5 +1,5 @@
 ---
-- name: Sync tags/vms in NSX-T
+- name: Sync VM {{ vm_name }} tags in NSX-T
   vmware.ansible_for_nsxt.nsxt_vm_tags:
     hostname: "{{ nsx_hostname }}"
     username: "{{ nsx_username }}"

@@ -8,3 +8,4 @@
     virtual_machine_display_name: "{{ vm_name }}"
     remove_other_tags: "{{ remove_other_tags }}"
     add_tags: "{{ tags }}"
+  ignore_errors: "{{ nsx_ignore_errors }}"

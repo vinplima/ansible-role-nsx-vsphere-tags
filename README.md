@@ -5,6 +5,20 @@ This role creates categories and tags in vCenter. For each category/tag with con
 
 At this present version, this role creates tags in vCenter and creates the same tags in NSX-T when there is at least one VM with the tag associated. However, tag removal from vCenter and adding tag into VMs are not in scope of this role.
 
+#### Table of Contents
+- [NSX-vSphere Tags Ansible Role](#nsx-vsphere-tags-ansible-role)
+      - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
+  - [Role Variables](#role-variables)
+    - [basic variables:](#basic-variables)
+    - [NSX-T variables:](#nsx-t-variables)
+    - [vCenter variables:](#vcenter-variables)
+    - [Tags variable:](#tags-variable)
+  - [Example Playbook](#example-playbook)
+  - [Versions](#versions)
+  - [License](#license)
+  - [Author Information](#author-information)
+
 Requirements
 ------------
 
@@ -37,6 +51,7 @@ Role Variables
 
 ### NSX-T variables:
 - remove_other_tags: if tags not declared for the VM in vSphere must be removed in NSX-T (type: Boolean, default: false)
+- nsx_ignore_errors: if must ignore errors during Tag creation in NSX-T (type: Boolean, default: false)
 
 ### vCenter variables:
 - vm_root_folder: folder in which VMs will be checked for tags (type: String, default: /Datacenter/vm)
@@ -79,6 +94,12 @@ Including an example of how to use your role (for instance, with variables passe
             - name: demo
               description: Demo tag
 ~~~
+
+Versions
+-------
+
+* v1.0.0: Creates tags in vCenter and sync tags with associated VMs to NSX-T
+* v1.1.0: Added variable nsx_ignore_errors, which makes possible to execute the playbook even though the VM is not found in NSX-T
 
 License
 -------

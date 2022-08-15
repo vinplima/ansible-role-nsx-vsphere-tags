@@ -32,4 +32,6 @@ nsx_vsphere_tags:
       tags:
         - name: demo-tag
           description: Demo tag
-        
+
+# ignore erros when creating tags in NSX-T
+nsx_ignore_errors: false
